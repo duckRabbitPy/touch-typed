@@ -1,0 +1,22 @@
+body {
+  background-color: rgb(49, 42, 89);
+}
+
+ul {
+  display: flex;
+  flex-direction: row;
+}
+
+ul > li {
+  display: inline-block;
+  font-size: xx-large;
+  color: aliceblue;
+}
+
+.correct {
+  color: greenyellow;
+}
+
+.incorrect {
+  color: rgb(247, 93, 76);
+}
