@@ -1,5 +1,27 @@
 body {
-  background-color: rgb(49, 42, 89);
+  font-family: monospace;
+  background-color: #2f74c0;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+h1 {
+  margin: 1rem;
+  color: white;
+  font-size: 60px;
+}
+
+img {
+  max-height: 200px;
 }
 
 ul {
@@ -19,4 +41,9 @@ ul > li {
 
 .incorrect {
   color: rgb(247, 93, 76);
+}
+
+#stats {
+  font-size: x-large;
+  color: aqua;
 }

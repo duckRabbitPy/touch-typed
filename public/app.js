@@ -3,6 +3,18 @@ let ul = document.querySelector("ul");
 let frontOfStackElem = ul.firstElementChild;
 const keySound = document.querySelector("#key_sound");
 const wrongSound = document.querySelector("#wrong_sound");
+const statDisplay = document.querySelector("#stats");
+const timer = new Timer();
+let timerStarted = false;
+const snippets = {
+    test: ["hello my name is oli", "const", "="],
+    functions: [
+        `const capitalize = (str: string = "", lowerRest = false): string =>
+  str.slice(0, 1).toUpperCase() +
+  (lowerRest ? str.slice(1).toLowerCase() : str.slice(1));`,
+        `const compact = (arr: any[]) => arr.filter(Boolean);`,
+    ],
+};
 nextSet();
 document.addEventListener("keydown", (event) => {
     let currPress = event.key;
@@ -21,7 +33,10 @@ document.addEventListener("keydown", (event) => {
         frontOfStackElem = moveToNext(frontOfStackElem);
         return;
     }
-    else if (currPress !== "Shift" && frontOfStackElem !== null) {
+    else if (currPress !== "Shift" &&
+        currPress !== "Meta" &&
+        currPress !== "Alt" &&
+        frontOfStackElem !== null) {
         //incorrect key
         isCorrect(frontOfStackElem, false);
         return;
@@ -29,7 +44,7 @@ document.addEventListener("keydown", (event) => {
 });
 function nextSet() {
     clearList();
-    const snippet = `const wrongSound = document.querySelector("#wrong_sound") as HTMLAudioElement;`;
+    const snippet = snippets.functions[1];
     const itemsArr = snippet.split("");
     populateList(itemsArr);
     frontOfStackElem = ul.firstElementChild;
@@ -67,9 +82,14 @@ function isCorrect(frontOfStackElem, correct) {
         wrongSound.play();
         frontOfStackElem.classList.add("incorrect");
     }
+    if (timerStarted === false) {
+        timer.start();
+        timerStarted = true;
+    }
 }
 function moveToNext(frontOfStackElem) {
     if (frontOfStackElem.nextElementSibling === null) {
+        getStats();
         frontOfStackElem = nextSet();
         return frontOfStackElem;
     }
@@ -92,4 +112,13 @@ function convertSpecial(currPress) {
         default:
             return currPress;
     }
+}
+function getStats() {
+    const secondsExpired = Math.ceil(timer.getTime() / 1000);
+    let chars = snippets.functions[1].length;
+    const speed = chars / secondsExpired;
+    statDisplay.innerHTML = `${(speed / 5) * 60} words a minute!!`;
+    timer.stop();
+    timer.reset();
+    timerStarted = false;
 }
