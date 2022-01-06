@@ -5,14 +5,15 @@ const keySound = document.querySelector("#key_sound");
 const wrongSound = document.querySelector("#wrong_sound");
 const statDisplay = document.querySelector("#stats");
 const timer = new Timer();
+let errorcount = 0;
+let snippetIndex = 0;
 let timerStarted = false;
 const snippets = {
     test: ["hello my name is oli", "const", "="],
     functions: [
-        `const capitalize = (str: string = "", lowerRest = false): string =>
-  str.slice(0, 1).toUpperCase() +
-  (lowerRest ? str.slice(1).toLowerCase() : str.slice(1));`,
+        `constructor(fname:string, lname:string, age:number, married:boolean)`,
         `const compact = (arr: any[]) => arr.filter(Boolean);`,
+        `let oddNumbers2:number[] = myArr.filter( (n:number) => n % 2 == 0 )`,
     ],
 };
 nextSet();
@@ -44,7 +45,7 @@ document.addEventListener("keydown", (event) => {
 });
 function nextSet() {
     clearList();
-    const snippet = snippets.functions[1];
+    const snippet = snippets.functions[snippetIndex];
     const itemsArr = snippet.split("");
     populateList(itemsArr);
     frontOfStackElem = ul.firstElementChild;
@@ -80,10 +81,12 @@ function isCorrect(frontOfStackElem, correct) {
     else if (!correct) {
         wrongSound.currentTime = 0;
         wrongSound.play();
+        errorcount++;
         frontOfStackElem.classList.add("incorrect");
     }
     if (timerStarted === false) {
         timer.start();
+        errorcount = 0;
         timerStarted = true;
     }
 }
@@ -115,10 +118,12 @@ function convertSpecial(currPress) {
 }
 function getStats() {
     const secondsExpired = Math.ceil(timer.getTime() / 1000);
-    let chars = snippets.functions[1].length;
-    const speed = chars / secondsExpired;
-    statDisplay.innerHTML = `${(speed / 5) * 60} words a minute!!`;
+    let chars = snippets.functions[snippetIndex].length;
+    const speed = Math.floor(chars / secondsExpired);
+    const accuracy = 100 - Math.floor((errorcount / chars) * 100);
+    statDisplay.innerHTML = `${(speed / 5) * 60} words a minute!! ${accuracy}% real accuracy`;
     timer.stop();
     timer.reset();
     timerStarted = false;
+    snippetIndex++;
 }
