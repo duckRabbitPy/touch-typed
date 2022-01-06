@@ -56,12 +56,29 @@ ul > li {
   color: aqua;
 }
 
+#stars {
+  font-size: xx-large;
+}
+
+.spinning {
+  animation: spin 2s;
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0.1;
   }
   100% {
     opacity: 1;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 
