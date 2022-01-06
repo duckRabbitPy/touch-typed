@@ -19,7 +19,7 @@ const snippets: {
   functions: [
     `const`,
     `function reverse(s: string): string;`,
-    `function playSound(x: (audioPlayer) => void) {x();}`,
+    `function playSound(x: () => void) {x();}`,
     `constructor(fname:string, lname:string, age:number, married:boolean)`,
     `const compact = (arr: any[]) => arr.filter(Boolean);`,
     `let oddNumbers2:number[] = myArr.filter( (n:number) => n % 2 == 0 )`,

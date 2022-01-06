@@ -14,7 +14,7 @@ Code (and Typescript code in particular) has a lot of characters and symbols tha
 
 So I developed a solution.
 
-This is an touch typing app with a difference. Practice with real typescript code examples and build your speed and confidence code snippets like this that are a far cry from the <i>quick brown foxes jumping over sleeping dogs!! 🦊💤🐶.<i>
+This is an touch typing app with a difference. Practice with real typescript code examples and build your speed and confidence to code snippets like this that are a far cry from the <i>quick brown foxes jumping over sleeping dogs!! 🦊💤🐶.<i>
 
 ```typescript
 function removeSorted<T>(array: SortedArray<T>, remove: T, compare: Comparer<T>): void {
