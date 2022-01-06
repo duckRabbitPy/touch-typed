@@ -27,12 +27,17 @@ img {
 ul {
   display: flex;
   flex-direction: row;
+  padding: 0;
 }
 
 ul > li {
   display: inline-block;
-  font-size: xx-large;
+  font-size: 30px;
   color: aliceblue;
+}
+
+.container {
+  padding-left: 1rem;
 }
 
 .correct {
@@ -44,6 +49,6 @@ ul > li {
 }
 
 #stats {
-  font-size: x-large;
+  font-size: xx-large;
   color: aqua;
 }
