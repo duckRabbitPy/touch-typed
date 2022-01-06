@@ -3,14 +3,20 @@ let ul = document.querySelector("ul");
 let frontOfStackElem = ul.firstElementChild;
 const keySound = document.querySelector("#key_sound");
 const wrongSound = document.querySelector("#wrong_sound");
+const winSound = document.querySelector("#win_sound");
 const statDisplay = document.querySelector("#stats");
+const starUL = document.querySelector("#stars");
+const XP = document.querySelector("#xp");
 const timer = new Timer();
 let errorcount = 0;
 let snippetIndex = 0;
+let runningScore = 0;
 let timerStarted = false;
 const snippets = {
-    test: ["hello my name is oli", "const", "="],
     functions: [
+        `const`,
+        `function reverse(s: string): string;`,
+        `function playSound(x: (audioPlayer) => void) {x();}`,
         `constructor(fname:string, lname:string, age:number, married:boolean)`,
         `const compact = (arr: any[]) => arr.filter(Boolean);`,
         `let oddNumbers2:number[] = myArr.filter( (n:number) => n % 2 == 0 )`,
@@ -44,7 +50,7 @@ document.addEventListener("keydown", (event) => {
     }
 });
 function nextSet() {
-    clearList();
+    clearList(ul);
     const snippet = snippets.functions[snippetIndex];
     const itemsArr = snippet.split("");
     populateList(itemsArr);
@@ -56,9 +62,9 @@ function nextSet() {
         throw new Error("Ul has no child element");
     }
 }
-function clearList() {
-    while (ul.firstChild) {
-        ul.removeChild(ul.firstChild);
+function clearList(element) {
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
     }
 }
 function populateList(itemsArr) {
@@ -84,8 +90,10 @@ function isCorrect(frontOfStackElem, correct) {
         errorcount++;
         frontOfStackElem.classList.add("incorrect");
     }
-    if (timerStarted === false) {
+    if (correct && timerStarted === false) {
         timer.start();
+        clearList(starUL);
+        statDisplay.innerHTML = "";
         errorcount = 0;
         timerStarted = true;
     }
@@ -119,11 +127,40 @@ function convertSpecial(currPress) {
 function getStats() {
     const secondsExpired = Math.ceil(timer.getTime() / 1000);
     let chars = snippets.functions[snippetIndex].length;
-    const speed = Math.floor(chars / secondsExpired);
+    const speed = (Math.floor(chars / secondsExpired) / 5) * 60;
     const accuracy = 100 - Math.floor((errorcount / chars) * 100);
-    statDisplay.innerHTML = `${(speed / 5) * 60} words a minute!! ${accuracy}% real accuracy`;
+    const score = accuracy * speed * 1.7;
+    printStars(score);
+    runningScore += score;
+    XP.innerHTML = `${String(Math.ceil(runningScore))} XP`;
+    statDisplay.innerHTML = `${speed} words a minute!${speed > 40 ? "🔥🔥" : ""} ${accuracy}% real accuracy ${accuracy > 95 ? "🎯🎯🎯" : ""}, +${score} xp`;
     timer.stop();
     timer.reset();
+    winSound.play();
     timerStarted = false;
     snippetIndex++;
+}
+function printStars(score) {
+    let stars = 0;
+    if (score > 6000) {
+        stars = 5;
+    }
+    else if (score > 5000) {
+        stars = 4;
+    }
+    else if (score > 4000) {
+        stars = 3;
+    }
+    else if (score > 2000) {
+        stars = 2;
+    }
+    else if (score < 2000) {
+        stars = 1;
+    }
+    for (let i = 0; i < stars; i++) {
+        let li = document.createElement("li");
+        li.setAttribute("class", "spinning");
+        li.appendChild(document.createTextNode("⭐"));
+        starUL.appendChild(li);
+    }
 }
