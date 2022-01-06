@@ -22,6 +22,7 @@ h1 {
 
 img {
   max-height: 200px;
+  animation: pulse 3s;
 }
 
 ul {
@@ -34,6 +35,7 @@ ul > li {
   display: inline-block;
   font-size: 30px;
   color: aliceblue;
+  animation: fadeIn 2s;
 }
 
 .container {
@@ -42,6 +44,7 @@ ul > li {
 
 .correct {
   color: greenyellow;
+  background-color: rgba(96, 233, 245, 0.329);
 }
 
 .incorrect {
@@ -51,4 +54,27 @@ ul > li {
 #stats {
   font-size: xx-large;
   color: aqua;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.7);
+  }
+
+  70% {
+    transform: scale(0.9);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
