@@ -159,6 +159,7 @@ function getStats() {
     statDisplay.innerHTML = `${speed} words a minute!${
       speed > 40 ? "🔥🔥" : ""
     } ${accuracy}% accuracy ${accuracy > 95 ? "🎯🎯🎯" : ""}, +${score} xp`;
+    winSound.currentTime = 0;
     winSound.play();
     snippetIndex++;
   } else {

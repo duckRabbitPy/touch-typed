@@ -141,6 +141,7 @@ function getStats() {
     XP.innerHTML = `${String(Math.ceil(runningScore))} XP`;
     if (score > 1500) {
         statDisplay.innerHTML = `${speed} words a minute!${speed > 40 ? "🔥🔥" : ""} ${accuracy}% accuracy ${accuracy > 95 ? "🎯🎯🎯" : ""}, +${score} xp`;
+        winSound.currentTime = 0;
         winSound.play();
         snippetIndex++;
     }
