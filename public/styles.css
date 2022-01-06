@@ -1,6 +1,7 @@
 body {
   font-family: monospace;
   background-color: #2f74c0;
+  color: white;
 }
 
 main {
@@ -16,8 +17,13 @@ header {
 
 h1 {
   margin: 1rem;
-  color: white;
-  font-size: 60px;
+  font-size: 4rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+  color: aqua;
+  font-weight: lighter;
 }
 
 img {
@@ -33,7 +39,7 @@ ul {
 
 ul > li {
   display: inline-block;
-  font-size: 30px;
+  font-size: 2vw;
   color: aliceblue;
   animation: fadeIn 2s;
 }

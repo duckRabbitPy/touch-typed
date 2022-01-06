@@ -6,15 +6,19 @@ const wrongSound = document.querySelector("#wrong_sound");
 const winSound = document.querySelector("#win_sound");
 const statDisplay = document.querySelector("#stats");
 const starUL = document.querySelector("#stars");
+const roundNum = document.querySelector("#round_num");
 const XP = document.querySelector("#xp");
 const timer = new Timer();
+let round = 1;
 let errorcount = 0;
 let snippetIndex = 0;
 let runningScore = 0;
 let timerStarted = false;
 const snippets = {
     functions: [
+        `let`,
         `const`,
+        `const winSound = document.querySelector("#win_sound") as HTMLAudioElement;`,
         `function reverse(s: string): string;`,
         `function playSound(x: () => void) {x();}`,
         `constructor(fname:string, lname:string, age:number, married:boolean)`,
@@ -102,6 +106,8 @@ function moveToNext(frontOfStackElem) {
     if (frontOfStackElem.nextElementSibling === null) {
         getStats();
         frontOfStackElem = nextSet();
+        round++;
+        roundNum.innerHTML = String(round);
         return frontOfStackElem;
     }
     return frontOfStackElem.nextElementSibling;
@@ -127,18 +133,23 @@ function convertSpecial(currPress) {
 function getStats() {
     const secondsExpired = Math.ceil(timer.getTime() / 1000);
     let chars = snippets.functions[snippetIndex].length;
-    const speed = (Math.floor(chars / secondsExpired) / 5) * 60;
+    const speed = (Math.ceil(chars / secondsExpired) / 5) * 60;
     const accuracy = 100 - Math.floor((errorcount / chars) * 100);
-    const score = accuracy * speed * 1.7;
+    const score = Math.ceil(accuracy * speed * 1.7);
     printStars(score);
     runningScore += score;
     XP.innerHTML = `${String(Math.ceil(runningScore))} XP`;
-    statDisplay.innerHTML = `${speed} words a minute!${speed > 40 ? "🔥🔥" : ""} ${accuracy}% real accuracy ${accuracy > 95 ? "🎯🎯🎯" : ""}, +${score} xp`;
+    if (score > 1500) {
+        statDisplay.innerHTML = `${speed} words a minute!${speed > 40 ? "🔥🔥" : ""} ${accuracy}% accuracy ${accuracy > 95 ? "🎯🎯🎯" : ""}, +${score} xp`;
+        winSound.play();
+        snippetIndex++;
+    }
+    else {
+        statDisplay.innerHTML = `Failed 😰. ${speed} words per minute. ${accuracy}% accuracy. Try again!`;
+    }
     timer.stop();
     timer.reset();
-    winSound.play();
     timerStarted = false;
-    snippetIndex++;
 }
 function printStars(score) {
     let stars = 0;
@@ -154,8 +165,11 @@ function printStars(score) {
     else if (score > 2000) {
         stars = 2;
     }
-    else if (score < 2000) {
+    else if (score > 1500) {
         stars = 1;
+    }
+    else if (score < 1500) {
+        return;
     }
     for (let i = 0; i < stars; i++) {
         let li = document.createElement("li");
