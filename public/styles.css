@@ -60,6 +60,11 @@ ul > li {
   font-size: xx-large;
 }
 
+#xp {
+  color: white;
+  font-size: xx-large;
+}
+
 .spinning {
   animation: spin 2s;
 }

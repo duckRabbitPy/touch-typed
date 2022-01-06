@@ -2,11 +2,14 @@ let ul = document.querySelector("ul")! as HTMLUListElement;
 let frontOfStackElem = ul.firstElementChild!;
 const keySound = document.querySelector("#key_sound") as HTMLAudioElement;
 const wrongSound = document.querySelector("#wrong_sound") as HTMLAudioElement;
+const winSound = document.querySelector("#win_sound") as HTMLAudioElement;
 const statDisplay = document.querySelector("#stats") as HTMLParagraphElement;
 const starUL = document.querySelector("#stars") as HTMLUListElement;
+const XP = document.querySelector("#xp") as HTMLParagraphElement;
 const timer = new Timer();
 let errorcount: number = 0;
-let snippetIndex = 0;
+let snippetIndex: number = 0;
+let runningScore: number = 0;
 
 let timerStarted = false;
 
@@ -15,6 +18,8 @@ const snippets: {
 } = {
   functions: [
     `const`,
+    `function reverse(s: string): string;`,
+    `function playSound(x: (audioPlayer) => void) {x();}`,
     `constructor(fname:string, lname:string, age:number, married:boolean)`,
     `const compact = (arr: any[]) => arr.filter(Boolean);`,
     `let oddNumbers2:number[] = myArr.filter( (n:number) => n % 2 == 0 )`,
@@ -97,7 +102,7 @@ function isCorrect(frontOfStackElem: Element, correct: Boolean) {
     frontOfStackElem.classList.add("incorrect");
   }
 
-  if (timerStarted === false) {
+  if (correct && timerStarted === false) {
     timer.start();
     clearList(starUL);
     statDisplay.innerHTML = "";
@@ -137,15 +142,19 @@ function convertSpecial(currPress: string) {
 function getStats() {
   const secondsExpired = Math.ceil(timer.getTime() / 1000);
   let chars = snippets.functions[snippetIndex].length;
-  const speed = Math.floor(chars / secondsExpired);
+  const speed = (Math.floor(chars / secondsExpired) / 5) * 60;
   const accuracy = 100 - Math.floor((errorcount / chars) * 100);
-  const score = accuracy * speed * 17;
+  const score = accuracy * speed * 1.7;
   printStars(score);
-  statDisplay.innerHTML = `${
-    (speed / 5) * 60
-  } words a minute!! ${accuracy}% real accuracy, +${score} xp`;
+  runningScore += score;
+  XP.innerHTML = `${String(Math.ceil(runningScore))} XP`;
+
+  statDisplay.innerHTML = `${speed} words a minute!${
+    speed > 40 ? "🔥🔥" : ""
+  } ${accuracy}% real accuracy ${accuracy > 95 ? "🎯🎯🎯" : ""}, +${score} xp`;
   timer.stop();
   timer.reset();
+  winSound.play();
   timerStarted = false;
   snippetIndex++;
 }
