@@ -8,39 +8,54 @@ const starUL = document.querySelector("#stars") as HTMLUListElement;
 const roundNum = document.querySelector("#round_num") as HTMLSpanElement;
 const XP = document.querySelector("#xp") as HTMLParagraphElement;
 const timer = new Timer();
-let round: number = 1;
-let errorcount: number = 0;
-let snippetIndex: number = 0;
-let runningScore: number = 0;
 
+// globals
+let round = 1;
+let errorcount = 0;
+let snippetIndex = 0;
+let runningScore = 0;
 let timerStarted = false;
 
+//retrieve first set
+window.onload = () => {
+  nextSet();
+};
+
 const snippets: {
+  declarations: string[];
   functions: string[];
+  objects: string[];
+  casting: string[];
+  interfaces: string[];
+  generics: string[];
 } = {
   functions: [
-    `let`,
-    `const`,
-    `const winSound = document.querySelector("#win_sound") as HTMLAudioElement;`,
+    `type to start`,
     `function reverse(s: string): string;`,
     `function playSound(x: () => void) {x();}`,
     `constructor(fname:string, lname:string, age:number, married:boolean)`,
     `const compact = (arr: any[]) => arr.filter(Boolean);`,
-    `let oddNumbers2:number[] = myArr.filter( (n:number) => n % 2 == 0 )`,
+    `let oddNumbers:number[] = myArr.filter( (n:number) => n % 2 == 0 )`,
   ],
+  declarations: [`let`, `const`],
+  objects: [],
+  casting: [
+    `const winSound = document.querySelector("#win_sound") as HTMLAudioElement;`,
+  ],
+  interfaces: [],
+  generics: [],
 };
 
-nextSet();
-
+// key event listener
 document.addEventListener("keydown", (event) => {
   let currPress = event.key;
-  const frontOfStackLetter = frontOfStackElem?.innerHTML;
+  const frontOfStackLetter = frontOfStackElem.innerHTML;
 
   currPress = convertSpecial(currPress);
 
   if (currPress === frontOfStackLetter && frontOfStackElem !== null) {
     //correct key
-    isCorrect(frontOfStackElem, true);
+    keyEffect(frontOfStackElem, true);
     frontOfStackElem = moveToNext(frontOfStackElem);
     return;
   } else if (
@@ -58,23 +73,10 @@ document.addEventListener("keydown", (event) => {
     frontOfStackElem !== null
   ) {
     //incorrect key
-    isCorrect(frontOfStackElem, false);
+    keyEffect(frontOfStackElem, false);
     return;
   }
 });
-
-function nextSet() {
-  clearList(ul);
-  const snippet = snippets.functions[snippetIndex];
-  const itemsArr = snippet.split("");
-  populateList(itemsArr);
-  frontOfStackElem = ul.firstElementChild!;
-  if (frontOfStackElem !== null) {
-    return frontOfStackElem;
-  } else {
-    throw new Error("Ul has no child element");
-  }
-}
 
 function clearList(element: Element) {
   while (element.firstChild) {
@@ -85,15 +87,12 @@ function clearList(element: Element) {
 function populateList(itemsArr: string[]) {
   itemsArr.forEach((item) => {
     let li = document.createElement("li");
-    if (item === " ") {
-      item = " ";
-    }
     li.appendChild(document.createTextNode(item));
     ul.appendChild(li);
   });
 }
 
-function isCorrect(frontOfStackElem: Element, correct: Boolean) {
+function keyEffect(frontOfStackElem: Element, correct: Boolean) {
   if (correct) {
     keySound.currentTime = 0;
     keySound.play();
@@ -106,6 +105,7 @@ function isCorrect(frontOfStackElem: Element, correct: Boolean) {
     frontOfStackElem.classList.add("incorrect");
   }
 
+  //start timer when first correct key entered on new round
   if (correct && timerStarted === false) {
     timer.start();
     clearList(starUL);
@@ -117,8 +117,11 @@ function isCorrect(frontOfStackElem: Element, correct: Boolean) {
 
 function moveToNext(frontOfStackElem: Element) {
   if (frontOfStackElem.nextElementSibling === null) {
-    getStats();
+    displayStats();
     frontOfStackElem = nextSet();
+    timer.stop();
+    timer.reset();
+    timerStarted = false;
     round++;
     roundNum.innerHTML = String(round);
     return frontOfStackElem;
@@ -145,12 +148,8 @@ function convertSpecial(currPress: string) {
   }
 }
 
-function getStats() {
-  const secondsExpired = Math.ceil(timer.getTime() / 1000);
-  let chars = snippets.functions[snippetIndex].length;
-  const speed = (Math.ceil(chars / secondsExpired) / 5) * 60;
-  const accuracy = 100 - Math.floor((errorcount / chars) * 100);
-  const score = Math.ceil(accuracy * speed * 1.7);
+function displayStats() {
+  const { speed, accuracy, score } = getStats();
   printStars(score);
   runningScore += score;
   XP.innerHTML = `${String(Math.ceil(runningScore))} XP`;
@@ -159,16 +158,25 @@ function getStats() {
     statDisplay.innerHTML = `${speed} words a minute!${
       speed > 40 ? "🔥🔥" : ""
     } ${accuracy}% accuracy ${accuracy > 95 ? "🎯🎯🎯" : ""}, +${score} xp`;
+    winSound.currentTime = 0;
     winSound.play();
     snippetIndex++;
   } else {
     statDisplay.innerHTML = `Failed 😰. ${speed} words per minute. ${accuracy}% accuracy. Try again!`;
   }
+}
 
-  timer.stop();
-  timer.reset();
-
-  timerStarted = false;
+function getStats() {
+  const secondsExpired = Math.ceil(timer.getTime() / 1000);
+  let chars = snippets.functions[snippetIndex].length;
+  const speed = (Math.ceil(chars / secondsExpired) / 5) * 60;
+  const accuracy = 100 - Math.floor((errorcount / chars) * 100);
+  const score = Math.ceil(accuracy * speed * 1.7);
+  return {
+    speed,
+    accuracy,
+    score,
+  };
 }
 
 function printStars(score: number) {
@@ -193,5 +201,18 @@ function printStars(score: number) {
     li.setAttribute("class", "spinning");
     li.appendChild(document.createTextNode("⭐"));
     starUL.appendChild(li);
+  }
+}
+
+function nextSet() {
+  clearList(ul);
+  const snippet = snippets.functions[snippetIndex];
+  const itemsArr = snippet.split("");
+  populateList(itemsArr);
+  frontOfStackElem = ul.firstElementChild!;
+  if (frontOfStackElem !== null) {
+    return frontOfStackElem;
+  } else {
+    throw new Error("Ul has no child element");
   }
 }
