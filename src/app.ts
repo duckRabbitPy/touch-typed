@@ -29,27 +29,35 @@ window.onload = () => {
 
 const snippets = {
   Functions: [
-    `type to start`,
+    `type: functions`,
     `function reverse(s: string): string;`,
     `function playSound(x: () => void) {x();}`,
     `const compact = (arr: any[]) => arr.filter(Boolean);`,
     `let oddNumbers:number[] = myArr.filter( (n:number) => n % 2 == 0 )`,
+    `function firstElement2<Type extends any[]>(arr: Type) {return arr[0];}`,
+    `topic complete return to menu!`,
   ],
   Casting: [
-    `type to start`,
+    `type: casting`,
+    `const currTopic = topic as options`,
     `const winSound = document.querySelector("#win_sound") as HTMLAudioElement;`,
     `let input = document.querySelector('input[type="text"]') as HTMLInputElement;`,
     `const XP = document.querySelector("#xp") as HTMLParagraphElement;`,
+    `topic complete return to menu!`,
   ],
   Interfaces: [
-    `type to start`,
+    `type: interfaces`,
     `interface Person { name: string; age: number;}`,
     `interface PaintOptions { shape: Shape; xPos?: number; yPos?: number;}`,
+    `interface CallOrConstruct {new (s: string): Date; (n?: number): number;}`,
+    `topic complete return to menu!`,
   ],
   Generics: [
-    `type to start`,
+    `type: generics`,
     `function identity<Type>(arg: Type): Type {return arg;}`,
     `let myIdentity: <Type>(arg: Type) => Type = identity;`,
+    `function firstElem<Type>(arr: Type[]): Type | undefined {return arr[0];}`,
+    `topic complete return to menu!`,
   ],
 };
 
@@ -67,6 +75,15 @@ document.addEventListener("keydown", (event) => {
   const frontOfStackLetter = frontOfStackElem.innerHTML;
 
   currPress = convertSpecial(currPress);
+
+  if (currPress === "Enter") {
+    ul.classList.remove("hidden");
+    round++;
+    roundInfo.innerHTML = `${topic}: Round ${String(round)}`;
+    clearList(starUL);
+    statDisplay.innerHTML = "";
+    return;
+  }
 
   if (currPress === frontOfStackLetter && frontOfStackElem !== null) {
     //correct key
@@ -100,6 +117,11 @@ topicSelectors.forEach((btn) => {
     form?.classList.add("hidden");
     menu?.classList.remove("hidden");
     footer?.classList.add("hidden");
+
+    clearList(ul);
+    nextSet();
+    ul.classList.remove("hidden");
+    roundInfo.innerHTML = `${topic}: Warm up 🙌`;
   });
 });
 
@@ -142,8 +164,6 @@ function keyEffect(frontOfStackElem: Element, correct: Boolean) {
   //start timer when first correct key entered on new round
   if (correct && timerStarted === false) {
     timer.start();
-    clearList(starUL);
-    statDisplay.innerHTML = "";
     errorcount = 0;
     timerStarted = true;
   }
@@ -153,11 +173,10 @@ function moveToNext(frontOfStackElem: Element) {
   if (frontOfStackElem.nextElementSibling === null) {
     displayStats();
     frontOfStackElem = nextSet();
+    ul.classList.add("hidden");
     timer.stop();
     timer.reset();
     timerStarted = false;
-    round++;
-    roundInfo.innerHTML = `${topic}: Round ${String(round)}`;
     return frontOfStackElem;
   }
   return frontOfStackElem.nextElementSibling;
@@ -191,13 +210,14 @@ function displayStats() {
   if (score > 1500) {
     statDisplay.innerHTML = `${speed} words a minute!${
       speed > 40 ? "🔥🔥" : ""
-    } ${accuracy}% accuracy ${accuracy > 95 ? "🎯🎯🎯" : ""}, +${score} xp`;
+    } ${accuracy}% accuracy ${accuracy > 95 ? "🎯🎯🎯" : ""} +${score} xp`;
     winSound.currentTime = 0;
     winSound.play();
     snippetIndex++;
   } else {
     statDisplay.innerHTML = `Failed 😰. ${speed} words per minute. ${accuracy}% accuracy. Try again!`;
   }
+  statDisplay.innerHTML += "</br></br>'Enter' to continue...";
 }
 
 function getStats() {
@@ -259,6 +279,8 @@ function reset() {
   errorcount = 0;
   snippetIndex = 0;
   runningScore = 0;
+  timer.stop();
+  timer.reset();
   timerStarted = false;
   clearList(ul);
   clearList(starUL);
