@@ -15,6 +15,14 @@ header {
   justify-content: space-between;
 }
 
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px 5px;
+  grid-auto-flow: row;
+}
+
 h1 {
   margin: 1rem;
   font-size: 4rem;
@@ -27,7 +35,7 @@ h2 {
 }
 
 img {
-  max-height: 200px;
+  max-height: 150px;
   animation: pulse 3s;
 }
 
@@ -42,6 +50,27 @@ ul > li {
   font-size: 2vw;
   color: aliceblue;
   animation: fadeIn 2s;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px 10px;
+  grid-auto-flow: row;
+  min-height: 400px;
+  margin: 3rem;
+}
+
+form .grid-item {
+  font-size: xx-large;
+  border-radius: 3%;
+  box-shadow: 0.5px 0.5px 0px 1px rgb(35, 37, 40);
+  background-color: whitesmoke;
+}
+
+form .grid-item:hover {
+  background-color: skyblue;
 }
 
 .container {
@@ -69,10 +98,15 @@ ul > li {
 #xp {
   color: white;
   font-size: xx-large;
+  margin: 0;
 }
 
 .spinning {
   animation: spin 2s;
+}
+
+.hidden {
+  display: none;
 }
 
 @keyframes fadeIn {

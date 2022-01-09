@@ -1,3 +1,6 @@
+const topicSelectors = document.querySelectorAll("input");
+const container = document.querySelector(".container");
+const form = document.querySelector("form");
 let ul = document.querySelector("ul")! as HTMLUListElement;
 let frontOfStackElem = ul.firstElementChild!;
 const keySound = document.querySelector("#key_sound") as HTMLAudioElement;
@@ -10,6 +13,7 @@ const XP = document.querySelector("#xp") as HTMLParagraphElement;
 const timer = new Timer();
 
 // globals
+let topic = "Functions";
 let round = 1;
 let errorcount = 0;
 let snippetIndex = 0;
@@ -21,30 +25,39 @@ window.onload = () => {
   nextSet();
 };
 
-const snippets: {
-  declarations: string[];
-  functions: string[];
-  objects: string[];
-  casting: string[];
-  interfaces: string[];
-  generics: string[];
-} = {
-  functions: [
+const snippets = {
+  Functions: [
     `type to start`,
     `function reverse(s: string): string;`,
     `function playSound(x: () => void) {x();}`,
-    `constructor(fname:string, lname:string, age:number, married:boolean)`,
     `const compact = (arr: any[]) => arr.filter(Boolean);`,
     `let oddNumbers:number[] = myArr.filter( (n:number) => n % 2 == 0 )`,
   ],
-  declarations: [`let`, `const`],
-  objects: [],
-  casting: [
+  Casting: [
+    `type to start`,
     `const winSound = document.querySelector("#win_sound") as HTMLAudioElement;`,
+    `let input = document.querySelector('input[type="text"]') as HTMLInputElement;`,
+    `const XP = document.querySelector("#xp") as HTMLParagraphElement;`,
   ],
-  interfaces: [],
-  generics: [],
+  Interfaces: [
+    `type to start`,
+    `interface Person { name: string; age: number;}`,
+    `interface PaintOptions { shape: Shape; xPos?: number; yPos?: number;}`,
+  ],
+  Generics: [
+    `type to start`,
+    `function identity<Type>(arg: Type): Type {return arg;}`,
+    `let myIdentity: <Type>(arg: Type) => Type = identity;`,
+  ],
 };
+
+type selectOptions = {
+  Functions: string[];
+  Casting: string[];
+  Interfaces: string[];
+  Generics: string[];
+};
+type options = keyof selectOptions;
 
 // key event listener
 document.addEventListener("keydown", (event) => {
@@ -76,6 +89,14 @@ document.addEventListener("keydown", (event) => {
     keyEffect(frontOfStackElem, false);
     return;
   }
+});
+
+topicSelectors.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    topic = btn.value;
+    container?.classList.remove("hidden");
+    form?.classList.add("hidden");
+  });
 });
 
 function clearList(element: Element) {
@@ -167,8 +188,9 @@ function displayStats() {
 }
 
 function getStats() {
-  const secondsExpired = Math.ceil(timer.getTime() / 1000);
-  let chars = snippets.functions[snippetIndex].length;
+  const secondsExpired = timer.getTime() / 1000;
+  const currTopic = topic as options;
+  const chars = snippets[currTopic][snippetIndex].length;
   const speed = (Math.ceil(chars / secondsExpired) / 5) * 60;
   const accuracy = 100 - Math.floor((errorcount / chars) * 100);
   const score = Math.ceil(accuracy * speed * 1.7);
@@ -206,7 +228,8 @@ function printStars(score: number) {
 
 function nextSet() {
   clearList(ul);
-  const snippet = snippets.functions[snippetIndex];
+  const currTopic = topic as options;
+  const snippet = snippets[currTopic][snippetIndex];
   const itemsArr = snippet.split("");
   populateList(itemsArr);
   frontOfStackElem = ul.firstElementChild!;
