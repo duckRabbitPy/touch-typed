@@ -27,27 +27,35 @@ window.onload = () => {
 };
 const snippets = {
     Functions: [
-        `type to start`,
+        `type: functions`,
         `function reverse(s: string): string;`,
         `function playSound(x: () => void) {x();}`,
         `const compact = (arr: any[]) => arr.filter(Boolean);`,
         `let oddNumbers:number[] = myArr.filter( (n:number) => n % 2 == 0 )`,
+        `function firstElement2<Type extends any[]>(arr: Type) {return arr[0];}`,
+        `topic complete return to menu!`,
     ],
     Casting: [
-        `type to start`,
+        `type: casting`,
+        `const currTopic = topic as options`,
         `const winSound = document.querySelector("#win_sound") as HTMLAudioElement;`,
         `let input = document.querySelector('input[type="text"]') as HTMLInputElement;`,
         `const XP = document.querySelector("#xp") as HTMLParagraphElement;`,
+        `topic complete return to menu!`,
     ],
     Interfaces: [
-        `type to start`,
+        `type: interfaces`,
         `interface Person { name: string; age: number;}`,
         `interface PaintOptions { shape: Shape; xPos?: number; yPos?: number;}`,
+        `interface CallOrConstruct {new (s: string): Date; (n?: number): number;}`,
+        `topic complete return to menu!`,
     ],
     Generics: [
-        `type to start`,
+        `type: generics`,
         `function identity<Type>(arg: Type): Type {return arg;}`,
         `let myIdentity: <Type>(arg: Type) => Type = identity;`,
+        `function firstElem<Type>(arr: Type[]): Type | undefined {return arr[0];}`,
+        `topic complete return to menu!`,
     ],
 };
 // key event listener
@@ -92,6 +100,10 @@ topicSelectors.forEach((btn) => {
         form === null || form === void 0 ? void 0 : form.classList.add("hidden");
         menu === null || menu === void 0 ? void 0 : menu.classList.remove("hidden");
         footer === null || footer === void 0 ? void 0 : footer.classList.add("hidden");
+        clearList(ul);
+        nextSet();
+        ul.classList.remove("hidden");
+        roundInfo.innerHTML = `${topic}: Warm up 🙌`;
     });
 });
 menu === null || menu === void 0 ? void 0 : menu.addEventListener("click", () => {
