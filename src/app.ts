@@ -279,6 +279,8 @@ function reset() {
   errorcount = 0;
   snippetIndex = 0;
   runningScore = 0;
+  timer.stop();
+  timer.reset();
   timerStarted = false;
   clearList(ul);
   clearList(starUL);
