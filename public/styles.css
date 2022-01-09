@@ -15,6 +15,16 @@ header {
   justify-content: space-between;
 }
 
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px 5px;
+  grid-auto-flow: row;
+  margin: 3rem;
+  padding: 1rem;
+}
+
 h1 {
   margin: 1rem;
   font-size: 4rem;
@@ -27,8 +37,16 @@ h2 {
 }
 
 img {
-  max-height: 200px;
+  max-height: 150px;
   animation: pulse 3s;
+}
+
+footer {
+  font-size: x-large;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem;
 }
 
 ul {
@@ -44,6 +62,23 @@ ul > li {
   animation: fadeIn 2s;
 }
 
+form .grid-item {
+  font-size: xx-large;
+  border-radius: 3%;
+  box-shadow: 0.5px 0.5px 0px 1px rgb(35, 37, 40);
+  background-color: whitesmoke;
+}
+
+form .grid-item:hover {
+  background-color: skyblue;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .container {
   padding-left: 1rem;
 }
@@ -55,6 +90,19 @@ ul > li {
 
 .incorrect {
   color: rgb(247, 93, 76);
+}
+
+#menu {
+  background-color: #004bad;
+  border-radius: 5%;
+  border: rgb(35, 37, 40) 1px solid;
+  color: white;
+}
+
+#menu:hover {
+  background-color: aqua;
+  border-radius: 5%;
+  color: black;
 }
 
 #stats {
@@ -69,10 +117,15 @@ ul > li {
 #xp {
   color: white;
   font-size: xx-large;
+  margin: 0;
 }
 
 .spinning {
   animation: spin 2s;
+}
+
+.hidden {
+  display: none;
 }
 
 @keyframes fadeIn {
