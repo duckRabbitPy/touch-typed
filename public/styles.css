@@ -21,6 +21,8 @@ form {
   grid-template-rows: 1fr 1fr;
   gap: 10px 5px;
   grid-auto-flow: row;
+  margin: 3rem;
+  padding: 1rem;
 }
 
 h1 {
@@ -50,16 +52,6 @@ ul > li {
   font-size: 2vw;
   color: aliceblue;
   animation: fadeIn 2s;
-}
-
-.form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 10px 10px;
-  grid-auto-flow: row;
-  min-height: 400px;
-  margin: 3rem;
 }
 
 form .grid-item {
