@@ -55,6 +55,14 @@ document.addEventListener("keydown", (event) => {
     let currPress = event.key;
     const frontOfStackLetter = frontOfStackElem.innerHTML;
     currPress = convertSpecial(currPress);
+    if (currPress === "Enter") {
+        ul.classList.remove("hidden");
+        round++;
+        roundInfo.innerHTML = `${topic}: Round ${String(round)}`;
+        clearList(starUL);
+        statDisplay.innerHTML = "";
+        return;
+    }
     if (currPress === frontOfStackLetter && frontOfStackElem !== null) {
         //correct key
         keyEffect(frontOfStackElem, true);
@@ -121,8 +129,6 @@ function keyEffect(frontOfStackElem, correct) {
     //start timer when first correct key entered on new round
     if (correct && timerStarted === false) {
         timer.start();
-        clearList(starUL);
-        statDisplay.innerHTML = "";
         errorcount = 0;
         timerStarted = true;
     }
@@ -131,11 +137,10 @@ function moveToNext(frontOfStackElem) {
     if (frontOfStackElem.nextElementSibling === null) {
         displayStats();
         frontOfStackElem = nextSet();
+        ul.classList.add("hidden");
         timer.stop();
         timer.reset();
         timerStarted = false;
-        round++;
-        roundInfo.innerHTML = `${topic}: Round ${String(round)}`;
         return frontOfStackElem;
     }
     return frontOfStackElem.nextElementSibling;
@@ -164,7 +169,7 @@ function displayStats() {
     runningScore += score;
     XP.innerHTML = `${String(Math.ceil(runningScore))} XP`;
     if (score > 1500) {
-        statDisplay.innerHTML = `${speed} words a minute!${speed > 40 ? "🔥🔥" : ""} ${accuracy}% accuracy ${accuracy > 95 ? "🎯🎯🎯" : ""}, +${score} xp`;
+        statDisplay.innerHTML = `${speed} words a minute!${speed > 40 ? "🔥🔥" : ""} ${accuracy}% accuracy ${accuracy > 95 ? "🎯🎯🎯" : ""} +${score} xp`;
         winSound.currentTime = 0;
         winSound.play();
         snippetIndex++;
@@ -172,6 +177,7 @@ function displayStats() {
     else {
         statDisplay.innerHTML = `Failed 😰. ${speed} words per minute. ${accuracy}% accuracy. Try again!`;
     }
+    statDisplay.innerHTML += "</br></br>'Enter' to continue...";
 }
 function getStats() {
     const secondsExpired = timer.getTime() / 1000;
