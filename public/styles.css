@@ -41,6 +41,14 @@ img {
   animation: pulse 3s;
 }
 
+footer {
+  font-size: x-large;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem;
+}
+
 ul {
   display: flex;
   flex-direction: row;
@@ -65,6 +73,12 @@ form .grid-item:hover {
   background-color: skyblue;
 }
 
+.details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .container {
   padding-left: 1rem;
 }
@@ -76,6 +90,19 @@ form .grid-item:hover {
 
 .incorrect {
   color: rgb(247, 93, 76);
+}
+
+#menu {
+  background-color: #004bad;
+  border-radius: 5%;
+  border: rgb(35, 37, 40) 1px solid;
+  color: white;
+}
+
+#menu:hover {
+  background-color: aqua;
+  border-radius: 5%;
+  color: black;
 }
 
 #stats {

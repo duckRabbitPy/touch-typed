@@ -7,14 +7,23 @@
     <title>Touch typing for programmers</title>
     <link rel="stylesheet" href="./styles.css" />
     <link rel="icon" type="image/png" href="./Media/TS type logo.png" />
+    <link
+    rel="stylesheet"
+    href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+    crossorigin="anonymous"
+  />
   </head>
   <body>
     <main>
       <header>
         <h1>Touch-Typed!</h1>
-        <section>
-          <img src="Media/TS type logo.png" />
+        <section class='details'>
+          
+          <img id="logo" src="Media/TS type logo.png" />
+          <button class="hidden" id="menu">Menu</button>
           <p id="xp">0 XP</p>
+          
         </section>
       </header>
 
@@ -28,7 +37,7 @@
 
   
       <section class="container hidden">
-        <h2>Round <span id="round_num">1</span></h2>
+        <h2 id="round_info"></h2>
         <pre>
         <ul>
         </ul>
@@ -36,6 +45,13 @@
         <p id="stats"></p>
         <ul id="stars"></ul>
       </section>
+
+      <footer>
+        <p>
+          <span><i id="github-icon" class="fab fa-github"></i></span
+          > DuckRabbitPy
+        </p> 
+      </footer>
     </main>
     <audio id="key_sound" src="Media/keySound.m4a"></audio>
     <audio id="wrong_sound" src="Media/wrongSound.mp3"></audio>
