@@ -59,6 +59,23 @@ const snippets = {
     `function firstElem<Type>(arr: Type[]): Type | undefined {return arr[0];}`,
     `topic complete return to menu!`,
   ],
+  Tsx: [
+    `type: tsx`,
+    `import type { menuBtn } from '@components/ReactHooks/menu';`,
+    `<Select selectProps={{ items: cards }} {...props} />`,
+    `useEffect(() => { findOptions(searchText);}, [searchText]);`,
+    `<div onClick={() => addLinkedRecord(recordId)} key={recordId}>`,
+    `export const useTransition = <T extends HTMLElement = HTMLElement>():`,
+    `topic complete return to menu!`,
+  ],
+  Classes: [
+    `type: classes`,
+    `class magician {powers: element[]; constructor(powers: element[]){}`,
+    `class Greeter {name: string; constructor() { this.name = "hello";}}`,
+    `class Place {readonly name: string = "world";}`,
+    `class Derived extends Base {constructor() {super();}}`,
+    `topic complete return to menu!`,
+  ],
 };
 
 type selectOptions = {
@@ -66,6 +83,8 @@ type selectOptions = {
   Casting: string[];
   Interfaces: string[];
   Generics: string[];
+  Tsx: string[];
+  Classes: string[];
 };
 type options = keyof selectOptions;
 
